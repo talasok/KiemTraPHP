@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 09, 2019 at 03:17 PM
+-- Generation Time: Nov 09, 2019 at 06:08 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -47,7 +47,6 @@ INSERT INTO `danhba` (`ID`, `Name`, `Email`, `Phone`) VALUES
 (12, 'Nguyễn Văn Heo', '', '03456789'),
 (14, 'Lê Tùng Khánh', '', '06728903242'),
 (15, 'Nguyễn Văn ', 'me@gmail.com', '0672890324'),
-(16, 'sấ', 'nvPhi@gmail.com', '0672890324'),
 (17, 'Nguyễn Văn Phi', 'nvPhi@gmail.com', '03456789');
 
 -- --------------------------------------------------------
@@ -58,20 +57,22 @@ INSERT INTO `danhba` (`ID`, `Name`, `Email`, `Phone`) VALUES
 
 CREATE TABLE `danhba_lable` (
   `ID` int(11) NOT NULL,
-  `IDLable` int(11) NOT NULL
+  `IDLable` int(11) NOT NULL,
+  `Name` text COLLATE utf8_unicode_ci NOT NULL,
+  `Email` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Phone` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `danhba_lable`
 --
 
-INSERT INTO `danhba_lable` (`ID`, `IDLable`) VALUES
-(1, 1),
-(1, 2),
-(3, 1),
-(3, 2),
-(14, 5),
-(15, 2);
+INSERT INTO `danhba_lable` (`ID`, `IDLable`, `Name`, `Email`, `Phone`) VALUES
+(7, 1, 'Lê Tùng Khánh', 'me@gmail.com', '03456789'),
+(7, 5, 'Lê Tùng Khánh', 'me@gmail.com', '03456789'),
+(14, 1, 'Lê Tùng Khánh', '', '06728903242'),
+(14, 2, 'Lê Tùng Khánh', '', '06728903242'),
+(14, 5, 'Lê Tùng Khánh', '', '06728903242');
 
 -- --------------------------------------------------------
 
@@ -107,8 +108,7 @@ ALTER TABLE `danhba`
 -- Indexes for table `danhba_lable`
 --
 ALTER TABLE `danhba_lable`
-  ADD PRIMARY KEY (`ID`,`IDLable`),
-  ADD KEY `kt2` (`IDLable`);
+  ADD PRIMARY KEY (`ID`,`IDLable`);
 
 --
 -- Indexes for table `lable`
@@ -142,6 +142,12 @@ ALTER TABLE `lable`
 ALTER TABLE `danhba_lable`
   ADD CONSTRAINT `kt1` FOREIGN KEY (`ID`) REFERENCES `danhba` (`ID`),
   ADD CONSTRAINT `kt2` FOREIGN KEY (`IDLable`) REFERENCES `lable` (`ID`);
+
+--
+-- Constraints for table `lable`
+--
+ALTER TABLE `lable`
+  ADD CONSTRAINT `lable_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `danhba_lable` (`IDLable`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
