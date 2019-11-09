@@ -54,5 +54,11 @@
 }
 .dropdown-item:hover, .dropdown-item:focus {
   text-decoration: none;
-  background-color: #7b7b7b;
+  background-color: #212529;
 }
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #212529;
+}
+

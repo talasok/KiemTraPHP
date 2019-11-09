@@ -55,7 +55,7 @@
             $con = DanhBa::connect();
             $sql="UPDATE `DanhBa` SET `Name`='$content[1]',`Email`='$content[2]',`Phone`='$content[3]'WHERE ID='$content[0]'";
             if (mysqli_query($con, $sql)) {
-                echo "New record created successfully";
+                //echo "New record created successfully";
             } else {
                 echo "Error: " . $sql . "<br>" . mysqli_error($con);
             }
@@ -65,7 +65,7 @@
             $con = DanhBa::connect();
             $sql="DELETE FROM `DanhBa` WHERE ID = '$id'";
             if (mysqli_query($con, $sql)) {
-                echo "New record created successfully";
+                //echo "New record created successfully";
             } else {
                 echo "Error: " . $sql . "<br>" . mysqli_error($con);
             }

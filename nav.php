@@ -2,11 +2,13 @@
     session_start();
     include_once("model/user.php");
     include_once("model/lable.php");
+    include_once("model/nhan.php");
     if (!isset($_SESSION["user"]))
         header("location:login.php");
     $user = unserialize($_SESSION["user"]);
 
     include_once("model/danhba.php");
+    //edit danh bạ
     if (isset($_REQUEST["editdanhba"])) {
         $id    = $_REQUEST["id"];
         $name = $_REQUEST["name"];
@@ -21,6 +23,7 @@
 
         DanhBa::editDB($content);
     }
+    ///add danh ba
     if (isset($_REQUEST["adddanhba"])) {
 
         $name = $_REQUEST["name"];
@@ -34,11 +37,35 @@
 
         DanhBa::addToDB($content);
     }
+    //add sdt vào nhãn
+    if (isset($_REQUEST["adddanhba-nhan"])) {
+        //if($_SERVER['$_REQUEST_'])
+        $id = $_REQUEST["ide"];
+        $idlable = $_POST["idlable"];
+        //print_r($_POST);
+        //echo $idlable."<br/>";
+        $content =  array();
+        foreach($idlable as $value) {
+            //Xử lý các phần tử được chọn
+           //echo $value."<br/>";
+           array_push($content,$value);
+        }
+        //array_push($content, $name);
+
+        Nhan::addToDB($id,$content);
+    }
+    
+    //add nhãn
     if (isset($_REQUEST["addNhan"])) {
         $name = $_REQUEST["name2"];
         Lable::addToDB($name);
     }
-    $lslable = Lable::getListLableDB();
+    
+    //nhãn
+    if (isset($_REQUEST["Nhan"])) {
+        $a = $_REQUEST["Nhan"];
+    }
+    //tìm kiếm
     $keyWord = null;
     if (isset($_REQUEST["search"])) {
         $keyWord = $_REQUEST["search"];
@@ -54,7 +81,14 @@
     } else {
         $lsFromDB = DanhBa::getListFromDB();
     }
-
+    $lslable = Lable::getListLableDB();
+    //xem ds nhan
+    if(isset($_REQUEST["action"])){
+        if(strcmp($_REQUEST["action"],"ds")==0){
+            $a =$_REQUEST["id"];
+            $lsFromDB= Nhan::getListLableDanhBaDB($a);
+        }
+    } 
     ?>
  <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
      <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
@@ -62,7 +96,7 @@
      </button>
      <div class="col-md-3">
          <img src="img/contacts_48dp.png" alt="1" style="width: 40px;height: 40px;">
-         <span style="color: white;">danh bạ</span>
+         <span style="color: white;"><a href="indextt.php" style="color: white;">danh bạ</a></span>
      </div>
      <!-- Navbar Search -->
      <form class="d-md-inline-block form-inline" style="width: 700px;">
@@ -75,18 +109,17 @@
              </div>
          </div>
      </form>
-     <a href="" style="margin-left: 55px;" class="nav-link text-white px-md-4"><?php echo "Xin chào! " . $user->fullName ?></a>
+     <!-- <a href="" style="margin-left: 55px;" class="nav-link text-white px-md-4"><?php echo "Xin chào! " . $user->fullName ?></a> -->
      <!-- Navbar -->
-     <ul class="navbar-nav ml-md-0">
+     <ul class="navbar-nav ml-auto" style="float: right;">
          <li class="nav-item dropdown no-arrow">
-             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  <i class="fas fa-user-circle fa-fw"></i>
              </a>
              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                 <a class="dropdown-item" href="#">Settings</a>
-                 <a class="dropdown-item" href="#">Activity Log</a>
+                 <a class="dropdown-item" href="#"><?php echo "Xin chào! " . $user->fullName ?></a>
                  <div class="dropdown-divider"></div>
-                 <a class="dropdown-item" href="logout.php">Logout</a>
+                 <a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
              </div>
          </li>
      </ul>
@@ -104,12 +137,12 @@
              </button>
          </li>
          <li class="nav nav-item">
-             <a class="nav-link" href="">
+             <a class="nav-link" href="indextt.php">
                  <i class="fas fa-user-circle fa-fw"></i>
-                 Danh bạ<span class="badge" style="float: right; background: blue;color: white"><?php echo count($lsFromDB) ?></span>
+                 Danh bạ<span class="badge" style="float: right; background: blue;color: white"><?php echo count(DanhBa::getListFromDB()) ?></span>
              </a>
          </li>
-         <li class="nav-item">
+         <!-- <li class="nav-item">
              <a class="nav-link" href="">
                  <i class="fas fa-fw fa-chart-area"></i>
                  <span>Thường xuyên liên hệ<span class="badge" style="float: right; background: blue;color: white;ra">3</span></span></a>
@@ -118,20 +151,25 @@
              <a class="nav-link" href="">
                  <i class="fas fa-fw fa-chart-area"></i>
                  <span>Liên hệ trùng lặp<span class="badge" style="float: right; background: blue;color: white;ra">3</span></span></a>
-         </li>
+         </li> -->
          <div class="dropdown-divider"></div>
          <li class="nav nav-item">
-             <a class="nav-link " data-toggle="dropdown" href="#">Nhãn</a>
-             <div class="dropdown-menu show" style="width: 230px;border: none;background-color: #212529;">
-                 <?php
-                    foreach ($lslable as $key => $value) { ?>
-                     <a class="dropdown-item text-white" href="#"><?php echo $value->name?>
-                    <span class="badge" style="float: right; background: blue;color: white;ra">3</span></a>
-                 <?php } ?>
-
-                 <!-- <a class="dropdown-item text-white" href="#">FPT<span class="badge" style="float: right; background: blue;color: white;ra">3</span></a>
-                 <a class="dropdown-item text-white" href="#">ai dó<span class="badge" style="float: right; background: blue;color: white;ra">3</span></a>
-                 <a class="dropdown-item text-white" href="#">bó tay<span class="badge" style="float: right; background: blue;color: white;ra">3</span></a> -->
+             <a class="nav-link "  href="#">Nhãn&nbsp&nbsp<i class="fa fa-angle-down rotate-icon"></i></a>
+             <div class="" style="width: 230px;border: none;background-color: #212529;">
+                 <ul class="nav nav-item">
+                     <?php
+                        foreach ($lslable as $key => $value) {
+                            $size = Nhan::getListLableDanhBaDB($value->id);
+                            //echo count($size) ."------".$value->id;
+                            ?>
+                         <li>
+                             <a class="nav-link text-white" href="indextt.php?action=ds&&id=<?php echo $value->id?>"><i class="fas fa-tag"></i>
+                                 <span>&nbsp&nbsp<?php echo $value->name ?></span>
+                                 <!-- <i class="fas fa-pen"></i>&nbsp&nbsp&nbsp<i class="fas fa-trash"></i> -->
+                                 <span class="badge" style="float: right; background: blue;color: white;"><?php echo count($size); ?></span></a>
+                        </li>
+                     <?php } ?>
+                 </ul>
              </div>
          </li>
          <li class="nav-item">

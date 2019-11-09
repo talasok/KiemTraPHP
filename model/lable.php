@@ -41,7 +41,7 @@ class Lable
     {
         $con = Lable::connect();
         $sql = "INSERT INTO `Lable`(`Lable`) VALUES ('$content')";
-        // $result =  $con->query($sql);
+        
         if (mysqli_query($con, $sql)) {
             echo "<script type='text/javascript'>alert('Thêm Thành công');</script>";
         } else {
