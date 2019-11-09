@@ -2,10 +2,16 @@
 class Nhan
 {
     var $id;
+    var $name;
+    var $email;
+    var $phone;
     var $idlable;
-    function __construct($id, $idlable)
+    function __construct($id,$name,$email, $phone, $idlable)
     {
         $this->id = $id;
+        $this->name = $name;
+        $this->email = $email;
+        $this->phone = $phone;
         $this->idlable = $idlable;
     }
     static function connect()
@@ -19,7 +25,7 @@ class Nhan
     static function getListLableDB()
     {
 
-        $con = Lable::connect();
+        $con = Nhan::connect();
         //b2: thao tác với csdl : CRUD
         $sql = "SELECT * FROM `danhba_lable`";
 
@@ -28,7 +34,8 @@ class Nhan
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) { //biên nó thành 1 mảng kết hợp
-                $thongtin = new Lable($row["ID"], $row["IDLable"]);
+                $thongtin = new Nhan($row["ID"],$row["Name"],$row["Email"],$row["Phone"] ,$row["IDLable"]);
+                
                 array_push($ds, $thongtin);
             }
         }
@@ -41,12 +48,11 @@ class Nhan
     {
         //$con = Lable::connect();
         //$n= count($content);
-
         foreach($content as $value)
         {
-            $con = Lable::connect();
+            $con = Nhan::connect();
             //echo $key."-------------------------";
-            $sql = "INSERT INTO `DanhBa_Lable`(`ID`,`IDLable`) VALUES ('$id','$value')";
+            $sql = "INSERT INTO `DanhBa_Lable`(`ID`,`Name`,`Email`,`Phone`,`IDLable`) VALUES ('$id[0]','$id[1]','$id[2]','$id[3]','$value')";
             //$result =  $con->query($sql);
             if (mysqli_query($con, $sql)) {
                 //echo "ok";
@@ -78,14 +84,14 @@ class Nhan
 
         $con = Nhan::connect();
         //b2: thao tác với csdl : CRUD
-        //$sql = "SELECT * FROM DanhBa_Lable WHERE IDLable = $idLable";
-        $sql = "SELECT * FROM `danhba` INNER JOIN`danhba_lable` ON danhba.ID =danhba_lable.ID INNER JOIN `lable` ON danhba_lable.IDLable=lable.ID WHERE IDLable = $idLable";
+        $sql = "SELECT * FROM DanhBa_Lable WHERE IDLable = $idLable";
+        //$sql = "SELECT * FROM `danhba` INNER JOIN`danhba_lable` ON danhba.ID =danhba_lable.ID INNER JOIN `lable` ON danhba_lable.IDLable=lable.ID WHERE IDLable = $idLable";
         $result =  $con->query($sql);
         $ds = array();
 
         if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) { //biên nó thành 1 mảng kết hợp
-                $thongtin = new info($row["ID"],$row["Name"],$row["Email"],$row["Phone"],$row["IDLable"]);
+                $thongtin = new Nhan($row["ID"],$row["Name"],$row["Email"],$row["Phone"],$row["IDLable"]);
                 array_push($ds, $thongtin);
             }
         }
@@ -103,7 +109,7 @@ class info{
     var $email;
     var $phone;
     var $idlable;
-    function __construct($id,$name,$email, $phone, $idlable)
+    function info($id,$name,$email, $phone, $idlable)
     {
         $this->id = $id;
         $this->name = $name;

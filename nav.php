@@ -41,6 +41,18 @@
     if (isset($_REQUEST["adddanhba-nhan"])) {
         //if($_SERVER['$_REQUEST_'])
         $id = $_REQUEST["ide"];
+        $ds=  array();
+        $lsFromDB = DanhBa::getListFromDB();
+        foreach($lsFromDB as $key=>$value){
+            if($value->id == $id){ 
+                array_push($ds,$value->id);
+                array_push($ds,$value->name);
+                array_push($ds,$value->email);
+                array_push($ds,$value->phone);
+               // $ds = $value;
+            break;
+            }
+        }
         $idlable = $_POST["idlable"];
         //print_r($_POST);
         //echo $idlable."<br/>";
@@ -52,7 +64,7 @@
         }
         //array_push($content, $name);
 
-        Nhan::addToDB($id,$content);
+        Nhan::addToDB($ds,$content);
     }
     
     //add nhãn
@@ -139,7 +151,7 @@
          <li class="nav nav-item">
              <a class="nav-link" href="indextt.php">
                  <i class="fas fa-user-circle fa-fw"></i>
-                 Danh bạ<span class="badge" style="float: right; background: blue;color: white"><?php echo count(DanhBa::getListFromDB()) ?></span>
+                 Danh bạ<span class="badge" style="float: right; background: blue;color: white" id="spam"><?php echo count(DanhBa::getListFromDB()) ?></span>
              </a>
          </li>
          <!-- <li class="nav-item">

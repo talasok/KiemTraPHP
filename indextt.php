@@ -20,7 +20,8 @@
                     <?php
                     if(isset($_REQUEST["action"])){
                         if(strcmp($_REQUEST["action"],"ds")==0){
-                            foreach ($lsFromDB as $key => $value) {?>
+                            foreach ($lsFromDB as $key => $value) {
+                               // echo $value->id .":".$value->idlable;?>
                                 <tr id="<?php echo "tr" ?><?php echo $value->id ?>">
                                     <td scope="col"><input type="checkbox" id="<?php echo $value->id ?>">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<?php echo $value->name ?></td>
                                     <td scope="col"><?php echo $value->email ?></td>
@@ -28,7 +29,7 @@
                                     <td scope="col">
                                         <button onclick="func(this)" id="editdanhba" data-toggle="modal" data-target="#editModal" class="btn btn-outline-warning" name="BtnEdit" eid="<?php echo $value->id ?>" ename="<?php echo $value->name ?>" eemail="<?php echo $value->email ?>" ephone="<?php echo $value->phone ?>">
                                             <i class="fas fa-edit"></i>Sửa </button>
-                                        <button onclick="deleteNhan(<?php echo $value->id ?>,<?php echo $value->idlable ?>)" type="submit" class="btn btn-outline-danger" nanme="deletenhan"><i class="fas fa-trash-alt"></i>Xóa </button>
+                                        <button onclick="deleteNhan(<?php echo $value->id ?>,<?php echo $value->idlable?>)" type="submit" class="btn btn-outline-danger" nanme="deletenhan"><i class="fas fa-trash-alt"></i>Xóa </button>
                                         
                                     </td>
                                 </tr>

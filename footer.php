@@ -34,7 +34,8 @@
         email.value = eEmail;
         phone.value = ePhone;
     }
-    function add(a){
+
+    function add(a) {
         var id = document.getElementById("ide");
         id.value = a;
     }
@@ -50,21 +51,7 @@
                 alert('xóa thành công');
             }
         };
-        xmlhttp.open("Post", "delete.php?id=" + id+"&&idlable=aaaa", true);
-        xmlhttp.send();
-    }
-    function deleteNhan(id,idlable) {
-        var xmlhttp = new XMLHttpRequest();
-        //console.log("-------------"+id+":"+idlable);
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                let a = document.getElementById('tr' + id);
-                a.remove();
-               // console.log("-------------"+id+":"+idlable); 
-                alert('xóa thành công');
-            }
-        };
-        xmlhttp.open("GET", "deletenhan.php?id=" +id +"&idlable=" +idlable, true);
+        xmlhttp.open("Post", "delete.php?id=" + id, true);
         xmlhttp.send();
     }
 
@@ -79,6 +66,23 @@
         };
         xmlhttp.open("GET", "search.php?name=" + val, true);
         xmlhttp.send();
+    }
+</script>
+<script>
+    function deleteNhan(id1, idlable) {
+        var xmlhttp = new XMLHttpRequest();
+        //console.log("-------------"+id+":"+idlable);
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                let a = document.getElementById('tr' + id1);
+                a.remove();
+                // console.log("-------------"+id+":"+idlable); 
+                alert('xóa thành công');
+            }
+        };
+        xmlhttp.open("POST", "deletenhan.php?id1=" + id1 + "&idlable1=" + idlable, true);
+        xmlhttp.send();
+
     }
 </script>
 <script>
